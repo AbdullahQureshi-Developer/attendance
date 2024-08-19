@@ -1,13 +1,16 @@
-import './App.css'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import SignIn from './components/SignIn/SignIn';
+import  Dashboard  from './components/Dashboard/Dashboard';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <h1>Hello World</h1>
-      </header>
-    </div>
-  )
+    <Router>
+      <Routes>
+        <Route path="/" element={<SignIn />} />
+        <Route path="/Dashboard" element={<Dashboard />} /> {/* Define your new page */}
+      </Routes>
+    </Router>
+  );
 }
 
-export default App
+export default App;
