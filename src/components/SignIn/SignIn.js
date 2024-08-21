@@ -1,31 +1,41 @@
 import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom';
-import Button from '@mui/material/Button'
-import CssBaseline from '@mui/material/CssBaseline'
-import TextField from '@mui/material/TextField'
-import Typography from '@mui/material/Typography'
-import Box from '@mui/material/Box'
-import Container from '@mui/material/Container'
+import { useNavigate } from 'react-router-dom'
+import {
+  Button,
+  CssBaseline,
+  TextField,
+  Typography,
+  Box,
+  Container,
+  IconButton,
+  InputAdornment,
+  AppBar,
+  Toolbar,
+} from '@mui/material'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import Visibility from '@mui/icons-material/Visibility'
 import VisibilityOff from '@mui/icons-material/VisibilityOff'
-import { IconButton, InputAdornment } from '@mui/material'
-import { AppBar, Toolbar } from '@mui/material'
 
+// Set up a default theme with your preferred font
 const defaultTheme = createTheme({
   typography: {
     fontFamily: 'Roboto, Arial',
   },
 })
 
-const predefinedUsername = 'user'
-let predefinedPin = '1234'
+// Hard-coded predefined usernames and PINs
+const predefinedUsernameAdmin = 'admin'
+const predefinedPinAdmin = '1234'
+
+// Saad's initial settings
+const predefinedUsernameSaad = 'Saad'
+let predefinedPinSaad = ''
 
 export default function SignIn() {
-     const navigate = useNavigate();
+  const navigate = useNavigate()
   const [user, setUser] = useState({ username: '', pin: '', newPin: '' })
   const [error, setError] = useState('')
-  const [firstLogin, setFirstLogin] = useState(true)
+  const [firstLogin, setFirstLogin] = useState(false) // Only true for Saad
   const [showPassword, setShowPassword] = useState(false)
 
   const handleChange = (event) => {
@@ -39,21 +49,32 @@ export default function SignIn() {
   const handleSubmit = (event) => {
     event.preventDefault()
     const { username, pin, newPin } = user
-    if (firstLogin) {
+
+   if (firstLogin && username === predefinedUsernameSaad) {
+      // Handle Saad's first login where he sets a new PIN
       if (newPin) {
-        predefinedPin = newPin
+        predefinedPinSaad = newPin
         setFirstLogin(false)
         setError('')
-        console.log('PIN set successfully:', predefinedPin)
+        console.log('PIN set successfully for Saad:', predefinedPinSaad)
       } else {
         setError('Please enter a new PIN')
       }
     } else {
-      if (username === predefinedUsername && pin === predefinedPin) {
+      // Handle regular logins
+      if (
+        (username === predefinedUsernameAdmin && pin === predefinedPinAdmin) ||
+        (username === predefinedUsernameSaad && pin === predefinedPinSaad)
+      ) {
         setError('')
-          console.log('User logged in successfully:', user)
-          navigate('/Dashboard');
-        // Proceed to the next step (e.g., redirect to another page)
+        console.log('User logged in successfully:', user)
+        
+        // Navigate to the appropriate dashboard based on the username
+        if (username === predefinedUsernameAdmin) {
+          navigate('/AdminDashboard')
+        } else {
+          navigate('/Dashboard')
+        }
       } else {
         setError('Invalid username or PIN')
       }
@@ -75,9 +96,7 @@ export default function SignIn() {
         </Toolbar>
       </AppBar>
       <Container component="main" maxWidth="xs">
-        <CssBaseline />
         <Box
-          className="box1"
           sx={{
             display: 'flex',
             flexDirection: 'column',
@@ -92,7 +111,9 @@ export default function SignIn() {
           }}
         >
           <Typography component="h1" variant="h5" sx={{ marginBottom: '-10%' }}>
-            {firstLogin ? 'Change Password' : 'Sign In'}
+            {firstLogin && user.username === predefinedUsernameSaad
+              ? 'Change Password'
+              : 'Sign In'}
           </Typography>
           <Box
             component="form"
@@ -100,7 +121,7 @@ export default function SignIn() {
             noValidate
             sx={{ mt: 1 }}
           >
-            {firstLogin ? (
+            {firstLogin && user.username === predefinedUsernameSaad ? (
               <>
                 <TextField
                   margin="normal"
@@ -153,7 +174,14 @@ export default function SignIn() {
                   value={user.username}
                   autoComplete="username"
                   autoFocus
-                  onChange={handleChange}
+                  onChange={(event) => {
+                    handleChange(event)
+                    if (event.target.value === predefinedUsernameSaad) {
+                      setFirstLogin(true)
+                    } else {
+                      setFirstLogin(false)
+                    }
+                  }}
                 />
                 <TextField
                   margin="normal"
@@ -161,11 +189,18 @@ export default function SignIn() {
                   name="pin"
                   variant="standard"
                   label="Pin code"
-                  type="password"
-                  id="pin"
+                  type={showPassword ? 'text' : 'password'}
                   value={user.pin}
-                  autoComplete="current-password"
                   onChange={handleChange}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton onClick={togglePasswordVisibility}>
+                          {showPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
                 />
                 {error && (
                   <Typography
