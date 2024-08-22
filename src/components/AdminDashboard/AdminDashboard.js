@@ -1,19 +1,19 @@
-import React from 'react';
-import {  Typography, Avatar } from '@mui/material';
+import React from 'react'
+import { Typography, Avatar } from '@mui/material'
 
-import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
-import MuiDrawer from '@mui/material/Drawer';
-import Box from '@mui/material/Box';
-import MuiAppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import List from '@mui/material/List';
-import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import { mainListItems } from './Listitems';
-import AdminCheck from '../attendance/admincheck';
+import { styled, createTheme, ThemeProvider } from '@mui/material/styles'
+import CssBaseline from '@mui/material/CssBaseline'
+import MuiDrawer from '@mui/material/Drawer'
+import Box from '@mui/material/Box'
+import MuiAppBar from '@mui/material/AppBar'
+import Toolbar from '@mui/material/Toolbar'
+import List from '@mui/material/List'
+import Divider from '@mui/material/Divider'
+import IconButton from '@mui/material/IconButton'
+import MenuIcon from '@mui/icons-material/Menu'
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
+import { mainListItems } from './AdminListitems'
+import AdminCheck from './admincheck'
 const drawerWidth = 240;
 
 const AppBar = styled(MuiAppBar, {
@@ -32,7 +32,7 @@ const AppBar = styled(MuiAppBar, {
       duration: theme.transitions.duration.enteringScreen,
     }),
   }),
-}));
+}))
 
 const Drawer = styled(MuiDrawer, {
   shouldForwardProp: (prop) => prop !== 'open',
@@ -58,21 +58,22 @@ const Drawer = styled(MuiDrawer, {
       },
     }),
   },
-}));
+}))
 
-const defaultTheme = createTheme();
+const defaultTheme = createTheme()
 
-  
-  const AdminDashboard = () => {
-  const [open, setOpen] = React.useState(true);
+const AdminDashboard = () => {
+
+
+  const [open, setOpen] = React.useState(true)
   const toggleDrawer = () => {
-    setOpen(!open);
-  };
+    setOpen(!open)
+  }
 
   // Example user initials
-  const userInitials = "S";
+  const userInitials = 'S'
   return (
-      <ThemeProvider theme={defaultTheme}>
+    <ThemeProvider theme={defaultTheme}>
       <Box sx={{ display: 'flex' }}>
         <CssBaseline />
         <AppBar position="absolute" open={open}>
@@ -81,7 +82,7 @@ const defaultTheme = createTheme();
               pr: '24px', // keep right padding when drawer closed
               display: 'flex',
               justifyContent: 'space-between',
-              alignItems: 'center'
+              alignItems: 'center',
             }}
           >
             <IconButton
@@ -110,7 +111,7 @@ const defaultTheme = createTheme();
             </Avatar>
           </Toolbar>
         </AppBar>
-        
+
         <Drawer variant="permanent" open={open}>
           <Toolbar
             sx={{
@@ -140,10 +141,12 @@ const defaultTheme = createTheme();
           }}
         >
           <AdminCheck/>
+
+         
         </Box>
       </Box>
     </ThemeProvider>
-  );
-};
+  )
+}
 
-export default AdminDashboard;
+export default AdminDashboard

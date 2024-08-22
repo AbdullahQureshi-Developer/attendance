@@ -7,11 +7,15 @@ import SettingsIcon from '@mui/icons-material/Settings'
 import PeopleIcon from '@mui/icons-material/People'
 import HomeIcon from '@mui/icons-material/Home'
 
+
+
+
 export const mainListItems = (
   <React.Fragment>
     <Link
-      to="/Dashboard"
+      to="/AdminDashboard"
       style={{ textDecoration: 'none', color: 'black' }}
+      
     >
       <ListItemButton>
         <ListItemIcon>
@@ -21,8 +25,9 @@ export const mainListItems = (
       </ListItemButton>
     </Link>
     <Link
-      to={'/Dashboard'}
+      to={'/Users'}
       style={{ textDecoration: 'none', color: 'black' }}
+     
     >
       <ListItemButton>
         <ListItemIcon>
