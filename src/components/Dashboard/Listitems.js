@@ -10,7 +10,7 @@ import HomeIcon from '@mui/icons-material/Home'
 export const mainListItems = (
   <React.Fragment>
     <Link
-      to="/Dashboard"
+      to="/AliDashboard"
       style={{ textDecoration: 'none', color: 'black' }}
     >
       <ListItemButton>
@@ -21,7 +21,7 @@ export const mainListItems = (
       </ListItemButton>
     </Link>
     <Link
-      to={'/Dashboard'}
+      to={'/SaadDashboard'}
       style={{ textDecoration: 'none', color: 'black' }}
     >
       <ListItemButton>

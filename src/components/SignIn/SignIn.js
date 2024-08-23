@@ -27,15 +27,18 @@ const defaultTheme = createTheme({
 const predefinedUsernameAdmin = 'admin'
 const predefinedPinAdmin = '1234'
 
-// Saad's initial settings
-const predefinedUsernameSaad = 'Saad'
-let predefinedPinSaad = ''
+// Users' initial settings
+const users = {
+  Saad: '',
+  Ali: '',
+  Ahmed: '',
+}
 
 export default function SignIn() {
   const navigate = useNavigate()
   const [user, setUser] = useState({ username: '', pin: '', newPin: '' })
   const [error, setError] = useState('')
-  const [firstLogin, setFirstLogin] = useState(false) // Only true for Saad
+  const [firstLogin, setFirstLogin] = useState(false) // Only true for first-time logins
   const [showPassword, setShowPassword] = useState(false)
 
   const handleChange = (event) => {
@@ -50,13 +53,13 @@ export default function SignIn() {
     event.preventDefault()
     const { username, pin, newPin } = user
 
-   if (firstLogin && username === predefinedUsernameSaad) {
-      // Handle Saad's first login where he sets a new PIN
+    if (firstLogin && users.hasOwnProperty(username)) {
+      // Handle first login where the user sets a new PIN
       if (newPin) {
-        predefinedPinSaad = newPin
+        users[username] = newPin
         setFirstLogin(false)
         setError('')
-        console.log('PIN set successfully for Saad:', predefinedPinSaad)
+        console.log(`PIN set successfully for ${username}:`, newPin)
       } else {
         setError('Please enter a new PIN')
       }
@@ -64,16 +67,22 @@ export default function SignIn() {
       // Handle regular logins
       if (
         (username === predefinedUsernameAdmin && pin === predefinedPinAdmin) ||
-        (username === predefinedUsernameSaad && pin === predefinedPinSaad)
+        (users[username] && pin === users[username])
       ) {
         setError('')
         console.log('User logged in successfully:', user)
-        
+
         // Navigate to the appropriate dashboard based on the username
         if (username === predefinedUsernameAdmin) {
           navigate('/AdminDashboard')
+        } else if (username === 'Saad') {
+          navigate('/SaadDashboard')
+        } else if (username === 'Ali') {
+          navigate('/AliDashboard')
+        } else if (username === 'Ahmed') {
+          navigate('/AhmedDashboard')
         } else {
-          navigate('/Dashboard')
+          navigate('/Dashboard') // Default dashboard if no match
         }
       } else {
         setError('Invalid username or PIN')
@@ -111,7 +120,7 @@ export default function SignIn() {
           }}
         >
           <Typography component="h1" variant="h5" sx={{ marginBottom: '-10%' }}>
-            {firstLogin && user.username === predefinedUsernameSaad
+            {firstLogin && users.hasOwnProperty(user.username)
               ? 'Change Password'
               : 'Sign In'}
           </Typography>
@@ -121,7 +130,7 @@ export default function SignIn() {
             noValidate
             sx={{ mt: 1 }}
           >
-            {firstLogin && user.username === predefinedUsernameSaad ? (
+            {firstLogin && users.hasOwnProperty(user.username) ? (
               <>
                 <TextField
                   margin="normal"
@@ -176,7 +185,7 @@ export default function SignIn() {
                   autoFocus
                   onChange={(event) => {
                     handleChange(event)
-                    if (event.target.value === predefinedUsernameSaad) {
+                    if (users.hasOwnProperty(event.target.value)) {
                       setFirstLogin(true)
                     } else {
                       setFirstLogin(false)

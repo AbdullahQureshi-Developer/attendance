@@ -1,10 +1,12 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import SignIn from './components/SignIn/SignIn'
-import Dashboard from './components/Dashboard/Dashboard'
+import SaadDashboard from './components/Dashboard/SaadDashboard'
 import { Provider } from 'react-redux'
 import { store } from './store'
 import AdminDashboard from './components/AdminDashboard/AdminDashboard'
 import Users from './components/AdminDashboard/users'
+import AliDashboard from './components/Dashboard/AliDashboard'
+import AhmedDashboard from './components/Dashboard/AhmedDashboard'
 // import UsersTable from './components/attendance/userTable'
 
 function App() {
@@ -13,7 +15,9 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<SignIn />} />
-          <Route path="/Dashboard" element={<Dashboard />} />
+          <Route path="/SaadDashboard" element={<SaadDashboard />} />
+          <Route path="/AliDashboard" element={<AliDashboard/>} />
+          <Route path="/AhmedDashboard" element={<AhmedDashboard />} />
           <Route path="/AdminDashboard" element={<AdminDashboard />} />
           <Route path="/Users" element={<Users/>} />
 
