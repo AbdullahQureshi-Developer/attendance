@@ -36,7 +36,7 @@ export const mainListItems = (
         <ListItemText primary="Users" />
       </ListItemButton>
     </Link>
-    <Link style={{ textDecoration: 'none', color: 'black' }}>
+    <Link to={'/SettingsPanel2'} style={{ textDecoration: 'none', color: 'black' }}>
       <ListItemButton>
         <ListItemIcon>
           <SettingsIcon />

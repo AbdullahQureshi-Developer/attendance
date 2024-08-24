@@ -6,18 +6,24 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import Alert from '@mui/material/Alert';
 
 const AttendanceAli = () => {
-  // Local state
   const [pastAttendance, setPastAttendance] = useState([
     { date: '03/03/2022', status: 'Present' },
     { date: '02/03/2022', status: 'Present' },
     { date: '01/03/2022', status: 'Present' },
     { date: '29/02/2022', status: 'Leave' },
-    { date: '28/02/2022', status: 'Absent' },
+    { date: '12/02/2022', status: 'Absent' },
+    { date: '28/02/2022', status: 'Present' },
+    { date: '19/02/2022', status: 'Leave' },
+    { date: '29/02/2022', status: 'Absent' },
+    { date: '28/02/2022', status: 'Present' },
+    { date: '30/02/2022', status: 'Absent' },
+    { date: '24/02/2022', status: 'Leave' },
+
+
   ]);
-  
+
   const [notificationVisible, setNotificationVisible] = useState(true);
   const [upcomingEntries, setUpcomingEntries] = useState([]);
-  
   const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
   const [leaveReason, setLeaveReason] = useState('');
@@ -27,8 +33,10 @@ const AttendanceAli = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('');
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 4; 
+
   const handleApplyForLeave = () => {
-    // Check if leave has already been applied for today
     const today = new Date().toLocaleDateString();
     const leaveAppliedToday = upcomingEntries.some(
       (entry) => entry.date === today && entry.status === 'Leave'
@@ -55,18 +63,13 @@ const AttendanceAli = () => {
         reason: leaveReason,
       };
 
-      // Add to upcoming entries
       setUpcomingEntries((prev) => [...prev, leaveEntry]);
-
-      // Add to past attendance
       setPastAttendance((prev) => [...prev, leaveEntry]);
 
       setIsDatePickerOpen(false);
       setShowLeaveDetails(false);
       setSelectedDate(null);
       setLeaveReason('');
-
-      // Mark leave as applied for today
       setHasAppliedForLeave(true);
     } else {
       alert('Please select a date and provide a reason for leave.');
@@ -74,14 +77,13 @@ const AttendanceAli = () => {
   };
 
   const handleSearch = () => {
-    // Implement search functionality here
   };
 
   useEffect(() => {
     if (showNotification) {
       const timer = setTimeout(() => {
         setShowNotification(false);
-      }, 5000);
+      }, 3000);
 
       return () => clearTimeout(timer);
     }
@@ -93,6 +95,15 @@ const AttendanceAli = () => {
       (!filterStatus || entry.status === filterStatus)
     );
   });
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = filteredAttendance.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(filteredAttendance.length / itemsPerPage);
+
+  const handlePageChange = (event, value) => {
+    setCurrentPage(value);
+  };
 
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -148,7 +159,7 @@ const AttendanceAli = () => {
             Search
           </Button>
 
-          {filteredAttendance.map((entry, index) => (
+          {currentItems.map((entry, index) => (
             <Box
               key={index}
               display="flex"
@@ -178,7 +189,12 @@ const AttendanceAli = () => {
           ))}
         </Box>
 
-        <Pagination count={7} page={1} sx={{ marginTop: 2 }} />
+        <Pagination
+          count={totalPages}
+          page={currentPage}
+          onChange={handlePageChange}
+          sx={{ marginTop: 2 }}
+        />
 
         <Button
           variant="contained"

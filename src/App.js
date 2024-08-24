@@ -7,7 +7,9 @@ import AdminDashboard from './components/AdminDashboard/AdminDashboard'
 import Users from './components/AdminDashboard/users'
 import AliDashboard from './components/Dashboard/AliDashboard'
 import AhmedDashboard from './components/Dashboard/AhmedDashboard'
-import SettingsPanel  from "./components/Dashboard/SettingsPanel"
+import SettingsPanel from "./components/Dashboard/SettingsPanel"
+import SettingsPanel2  from "./components/AdminDashboard/SettingsPanel2"
+
 // import UsersTable from './components/attendance/userTable'
 
 function App() {
@@ -21,7 +23,8 @@ function App() {
           <Route path="/AhmedDashboard" element={<AhmedDashboard />} />
           <Route path="/AdminDashboard" element={<AdminDashboard />} />
           <Route path="/Users" element={<Users/>} />
-          <Route path="/SettingsPanel" element={<SettingsPanel/>} />
+          <Route path="/SettingsPanel" element={<SettingsPanel />} />
+          <Route path="/SettingsPanel2" element={<SettingsPanel2/>} />
         </Routes>
       </Router>
     </Provider>

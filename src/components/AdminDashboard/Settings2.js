@@ -15,7 +15,7 @@ function Settings() {
     <Box sx={{ margin: '5%', marginLeft: '51px' }}>
       {/* Breadcrumbs */}
       <Breadcrumbs aria-label="breadcrumb">
-        <Link underline="hover" color="inherit" href="/AliDashboard">
+        <Link underline="hover" color="inherit" href="/AdminDashboard">
           <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />
           Dashboard
         </Link>
