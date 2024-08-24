@@ -13,8 +13,8 @@ import MenuIcon from '@mui/icons-material/Menu'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import Avatar from '@mui/material/Avatar'
 import { mainListItems } from './Listitems'
-import Attendance from '../attendance/attendanceSaad'
-import AttendanceSaad from '../attendance/attendanceSaad'
+import Attendance from '../attendance/SaadAttendance'
+import AttendanceSaad from '../attendance/SaadAttendance'
 // import UsersTable from '../attendance/userTable';
 
 const drawerWidth = 240

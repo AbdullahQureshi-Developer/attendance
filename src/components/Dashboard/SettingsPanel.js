@@ -13,8 +13,8 @@ import MenuIcon from '@mui/icons-material/Menu'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import Avatar from '@mui/material/Avatar'
 import { mainListItems } from './Listitems'
-import Attendance from '../attendance/SaadAttendance'
-import AttendanceAhmed from '../attendance/AhmedAttendance'
+
+import Settings from './Settings'
 // import UsersTable from '../attendance/userTable';
 
 const drawerWidth = 240
@@ -67,7 +67,7 @@ const Drawer = styled(MuiDrawer, {
 
 const defaultTheme = createTheme()
 
-export default function AhmedDashboard() {
+export default function SettingsPanel() {
   const [open, setOpen] = React.useState(true)
   const toggleDrawer = () => {
     setOpen(!open)
@@ -144,13 +144,7 @@ export default function AhmedDashboard() {
             width: '100%',
           }}
         >
-          {/* <UsersTable/> */}
-          <AttendanceAhmed />
-          {/* {attend && users ? (
-            <span>{users}</span>
-          ) : (
-              <span>{attend}</span>
-          )} */}
+          <Settings />
         </Box>
       </Box>
     </ThemeProvider>
