@@ -1,37 +1,38 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const initialState = {
-  pastAttendance: [
-    { date: '03/03/2022', status: 'Present' },
-    { date: '02/03/2022', status: 'Present' },
-    { date: '01/03/2022', status: 'Present' },
-    { date: '29/02/2022', status: 'Leave' },
-    { date: '28/02/2022', status: 'Absent' },
-  ],
-  notificationVisible: true,
-  upcomingEntries: [],
-};
-
 const attendanceSlice = createSlice({
   name: 'attendance',
-  initialState,
+  initialState: {
+    pastAttendance: [
+      { date: '09/03/2022', status: 'Present', name: 'John Doe' },
+      { date: '02/03/2022', status: 'Present', name: 'Doette' },
+      { date: '01/03/2022', status: 'Present', name: 'Xin Yue' },
+      { date: '29/02/2022', status: 'Leave', name: 'Kate John' },
+      { date: '28/02/2022', status: 'Absent', name: 'Saad Ahmed' },
+      { date: '12/02/2022', status: 'Absent', name: 'William Doe' },
+      { date: '28/02/2022', status: 'Present', name: 'Jane Doette' },
+      { date: '19/02/2022', status: 'Leave', name: 'Xin Yue' },
+      { date: '29/02/2022', status: 'Absent', name: 'Ali Sallar' },
+      { date: '28/02/2022', status: 'Present', name: 'Saad Ahmed' },
+      { date: '30/02/2022', status: 'Absent', name: 'Mike Doe' },
+      { date: '24/02/2022', status: 'Leave', name: 'Jane Doette' },
+    ],
+    notificationVisible: true,
+    upcomingEntries: [],
+  },
   reducers: {
-    hideNotification(state) {
-      state.notificationVisible = false;
+    updatePastAttendance(state, action) {
+      state.pastAttendance = action.payload;
     },
     addUpcomingEntry(state, action) {
       state.upcomingEntries.push(action.payload);
     },
-    addPastAttendance(state, action) {
-      state.pastAttendance.push(action.payload);
-    },
-    searchAttendance(state, action) {
-      // Implement search functionality here if needed
-      // This is just a placeholder for searching past attendance
+    setNotificationVisible(state, action) {
+      state.notificationVisible = action.payload;
     },
   },
 });
 
-export const { hideNotification, addUpcomingEntry, addPastAttendance, searchAttendance } = attendanceSlice.actions;
+export const { updatePastAttendance, addUpcomingEntry, setNotificationVisible } = attendanceSlice.actions;
 
 export default attendanceSlice.reducer;

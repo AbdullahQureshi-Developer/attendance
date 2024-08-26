@@ -1,60 +1,46 @@
-import React, { useState, useEffect } from 'react'
-import { Box, Typography, Button, Paper, TextField } from '@mui/material'
-import Pagination from '@mui/material/Pagination'
-import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers'
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
-import Alert from '@mui/material/Alert'
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Box, Typography, Button, Paper, TextField, MenuItem, Select, FormControl, InputLabel } from '@mui/material';
+import Pagination from '@mui/material/Pagination';
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import Alert from '@mui/material/Alert';
+import { addUpcomingEntry, updatePastAttendance } from '../attendance/attendanceSlice';
 
 const AttendanceSaad = () => {
-  // Local state
-  const [pastAttendance, setPastAttendance] = useState([
-    { date: '03/03/2022', status: 'Present' },
-    { date: '02/03/2022', status: 'Present' },
-    { date: '01/03/2022', status: 'Present' },
-    { date: '29/02/2022', status: 'Leave' },
-    { date: '28/02/2022', status: 'Absent' },
-    { date: '12/02/2022', status: 'Absent' },
-    { date: '28/02/2022', status: 'Present' },
-    { date: '19/02/2022', status: 'Leave' },
-    { date: '29/02/2022', status: 'Absent' },
-    { date: '28/02/2022', status: 'Present' },
-    { date: '30/02/2022', status: 'Absent' },
-    { date: '24/02/2022', status: 'Leave' },
-  ])
+  const dispatch = useDispatch();
+  const { pastAttendance, upcomingEntries, notificationVisible } = useSelector((state) => state.attendance);
 
-  const [notificationVisible, setNotificationVisible] = useState(true)
-  const [upcomingEntries, setUpcomingEntries] = useState([])
+  const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [leaveReason, setLeaveReason] = useState('');
+  const [showLeaveDetails, setShowLeaveDetails] = useState(false);
+  const [hasAppliedForLeave, setHasAppliedForLeave] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filterStatus, setFilterStatus] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5; // Number of items per page
 
-  const [isDatePickerOpen, setIsDatePickerOpen] = useState(false)
-  const [selectedDate, setSelectedDate] = useState(null)
-  const [leaveReason, setLeaveReason] = useState('')
-  const [showLeaveDetails, setShowLeaveDetails] = useState(false)
-  const [hasAppliedForLeave, setHasAppliedForLeave] = useState(false)
-  const [showNotification, setShowNotification] = useState(notificationVisible)
-  const [searchTerm, setSearchTerm] = useState('')
-  const [filterStatus, setFilterStatus] = useState('')
-
-  const [currentPage, setCurrentPage] = useState(1)
-  const itemsPerPage = 5 // Number of items per page
+  const statusOptions = ['Present', 'Absent', 'Leave'];
 
   const handleApplyForLeave = () => {
-    const today = new Date().toLocaleDateString()
+    const today = new Date().toLocaleDateString();
     const leaveAppliedToday = upcomingEntries.some(
-      (entry) => entry.date === today && entry.status === 'Leave',
-    )
+      (entry) => entry.date === today && entry.status === 'Leave'
+    );
 
     if (leaveAppliedToday) {
-      alert('You have already applied for leave today.')
-      return
+      alert('You have already applied for leave today.');
+      return;
     }
 
-    setIsDatePickerOpen(true)
-    setShowLeaveDetails(true)
-  }
+    setIsDatePickerOpen(true);
+    setShowLeaveDetails(true);
+  };
 
   const handleDateChange = (date) => {
-    setSelectedDate(date)
-  }
+    setSelectedDate(date);
+  };
 
   const handleLeaveSubmission = () => {
     if (selectedDate && leaveReason) {
@@ -62,64 +48,46 @@ const AttendanceSaad = () => {
         date: selectedDate.toLocaleDateString(),
         status: 'Leave',
         reason: leaveReason,
-      }
+      };
 
-      setUpcomingEntries((prev) => [...prev, leaveEntry])
-      setPastAttendance((prev) => [...prev, leaveEntry])
+      dispatch(addUpcomingEntry(leaveEntry));
+      dispatch(updatePastAttendance([...pastAttendance, leaveEntry]));
 
-      setIsDatePickerOpen(false)
-      setShowLeaveDetails(false)
-      setSelectedDate(null)
-      setLeaveReason('')
-      setHasAppliedForLeave(true)
+      setIsDatePickerOpen(false);
+      setShowLeaveDetails(false);
+      setSelectedDate(null);
+      setLeaveReason('');
+      setHasAppliedForLeave(true);
     } else {
-      alert('Please select a date and provide a reason for leave.')
+      alert('Please select a date and provide a reason for leave.');
     }
-  }
-
-  const handleSearch = () => {
-    // Implement search functionality here
-  }
-
-  useEffect(() => {
-    if (showNotification) {
-      const timer = setTimeout(() => {
-        setShowNotification(false)
-      }, 5000)
-
-      return () => clearTimeout(timer)
-    }
-  }, [showNotification])
+  };
 
   const filteredAttendance = pastAttendance.filter((entry) => {
     return (
       (!searchTerm || entry.date.includes(searchTerm)) &&
       (!filterStatus || entry.status === filterStatus)
-    )
-  })
+    );
+  });
 
   // Pagination logic
-  const indexOfLastItem = currentPage * itemsPerPage
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filteredAttendance.slice(
     indexOfFirstItem,
-    indexOfLastItem,
-  )
+    indexOfLastItem
+  );
 
   const handleChangePage = (event, newPage) => {
-    setCurrentPage(newPage)
-  }
+    setCurrentPage(newPage);
+  };
 
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <Box sx={{ padding: 3, width: '100%' }}>
-        {showNotification && (
+        {notificationVisible && (
           <Paper sx={{ marginTop: 2, padding: 2, backgroundColor: '#e3f2fd' }}>
-            <Box
-              display="flex"
-              justifyContent="space-between"
-              alignItems="center"
-            >
+            <Box display="flex" justifyContent="space-between" alignItems="center">
               <Alert severity="info">
                 <Typography color="rgba(1, 67, 97, 1)" fontFamily={'Roboto'}>
                   <strong>Welcome back, Saad!</strong>
@@ -143,16 +111,22 @@ const AttendanceSaad = () => {
             variant="outlined"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            sx={{ marginBottom: 2 }}
+            sx={{ marginBottom: 2, marginRight:2 }}
           />
 
-          <TextField
-            label="Filter by Status"
-            variant="outlined"
-            value={filterStatus}
-            onChange={(e) => setFilterStatus(e.target.value)}
-            sx={{ marginBottom: 2 }}
-          />
+          <FormControl variant="outlined" sx={{ marginBottom: 2, width: '20%', marginRight:2 }}>
+            <InputLabel>Filter by Status</InputLabel>
+            <Select
+              value={filterStatus}
+              onChange={(e) => setFilterStatus(e.target.value)}
+              label="Filter by Status"
+            >
+              <MenuItem value=""><em>All</em></MenuItem>
+              {statusOptions.map((status) => (
+                <MenuItem key={status} value={status}>{status}</MenuItem>
+              ))}
+            </Select>
+          </FormControl>
 
           <Button
             variant="contained"
@@ -162,8 +136,8 @@ const AttendanceSaad = () => {
               textTransform: 'none',
               borderRadius: 2,
               marginBottom: 2,
+              height:'5%',
             }}
-            onClick={handleSearch}
           >
             Search
           </Button>
@@ -291,7 +265,7 @@ const AttendanceSaad = () => {
         </Box>
       </Box>
     </LocalizationProvider>
-  )
-}
+  );
+};
 
-export default AttendanceSaad
+export default AttendanceSaad;
