@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Box, Typography, Button, Paper, TextField, MenuItem, Select, FormControl, InputLabel } from '@mui/material';
 import Pagination from '@mui/material/Pagination';
@@ -20,8 +20,19 @@ const AttendanceAli = () => {
   const [filterStatus, setFilterStatus] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5; // Number of items per page
+  const [isNotificationVisible, setIsNotificationVisible] = useState(notificationVisible);
 
   const statusOptions = ['Present', 'Absent', 'Leave'];
+
+  useEffect(() => {
+    if (notificationVisible) {
+      setIsNotificationVisible(true);
+      const timer = setTimeout(() => {
+        setIsNotificationVisible(false);
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [notificationVisible]);
 
   const handleApplyForLeave = () => {
     const today = new Date().toLocaleDateString();
@@ -85,7 +96,7 @@ const AttendanceAli = () => {
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <Box sx={{ padding: 3, width: '100%' }}>
-        {notificationVisible && (
+        {isNotificationVisible && (
           <Paper sx={{ marginTop: 2, padding: 2, backgroundColor: '#e3f2fd' }}>
             <Box display="flex" justifyContent="space-between" alignItems="center">
               <Alert severity="info">
