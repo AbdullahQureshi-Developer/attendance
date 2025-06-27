@@ -68,3 +68,16 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+👤 Admin
+Username: admin
+
+PIN: 1234
+
+👥 Users (First-time login – need to set PIN)
+Username: Saad
+
+Username: Ali
+
+Username: Ahmed
+
+PIN: (Initially empty — user sets it during first login)
